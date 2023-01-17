@@ -27,6 +27,8 @@ function createGallaryItemsMarkup(items) {
 galleryContainer.addEventListener("click", onImageClick);
 //вешаем на контейнер обработчик слушателя кликов
 
+let instance = {};
+
 function onImageClick(e) {
   // запрещаем браузеру стандартное действие на открытие картинки по ссылке
   blockStandartAction(e);
@@ -38,20 +40,29 @@ function onImageClick(e) {
 
   // если картинка - выполняем код
   const urlBigImg = e.target.dataset.source;
-  const instance = basicLightbox.create(`
+  instance = basicLightbox.create(`
   <img width="1400" height="900" src="${urlBigImg}">
   `);
-
+  
+  // запуск шоу
   instance.show();
 
-  // закрываем по кнопке esc
-  galleryContainer.addEventListener("keydown", (e) => {
-    if (e.code === "Escape") {
-      instance.close();
-    }
-  });
+  // вешаем слушателя события на виндоу 
+  window.addEventListener("keydown", onCloseBigImg);
+  
 }
 
+//закрытие шоу
+function onCloseBigImg(e) {
+  // если нажали Esc закрываем шоу
+  if (e.code === "Escape") {
+    instance.close();
+  }
+  // снимаем слушателя события на виндоу
+  window.removeEventListener("keydown", onCloseBigImg);
+};
+
+//запрещение браузеру открытие картинки по клику на ссылку
 function blockStandartAction(e) {
   e.preventDefault();
 }
