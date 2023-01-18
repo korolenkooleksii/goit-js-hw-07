@@ -49,7 +49,6 @@ function onImageClick(e) {
 
   // вешаем слушателя события на виндоу 
   window.addEventListener("keydown", onCloseBigImg);
-  
 }
 
 //закрытие шоу
